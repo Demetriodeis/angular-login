@@ -1,0 +1,45 @@
+<div class="dashboard-container">
+  <h1>Dashboard Financeiro</h1>
+  
+  <div class="summary-cards">
+    <div class="card income">
+      <div class="label">Receita Total</div>
+      <div class="value">R$ {{ getTotalIncome() | number: '1.2-2' }}</div>
+      <div class="icon">📈</div>
+    </div>
+    
+    <div class="card outcome">
+      <div class="label">Despesa Total</div>
+      <div class="value">R$ {{ getTotalOutcome() | number: '1.2-2' }}</div>
+      <div class="icon">📉</div>
+    </div>
+    
+    <div class="card balance" [class.positive]="getBalance() >= 0" [class.negative]="getBalance() < 0">
+      <div class="label">Saldo</div>
+      <div class="value">R$ {{ getBalance() | number: '1.2-2' }}</div>
+      <div class="icon">💰</div>
+    </div>
+  </div>
+
+  <div class="recent-transactions">
+    <h2>Transações Recentes</h2>
+    <div class="transactions-list" *ngIf="transactionService.transactions().length > 0">
+      <div class="transaction-item" *ngFor="let transaction of transactionService.transactions().slice(0, 5)"
+        [class.income]="transaction.type === 'income'"
+        [class.outcome]="transaction.type === 'outcome'">
+        <div class="transaction-left">
+          <div class="description">{{ transaction.description }}</div>
+          <div class="date">{{ transaction.date | date: 'dd/MM/yyyy' }}</div>
+        </div>
+        <div class="transaction-right">
+          <div class="amount" [class.income]="transaction.type === 'income'">
+            {{ transaction.type === 'income' ? '+' : '-' }} R$ {{ transaction.amount | number: '1.2-2' }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="empty" *ngIf="transactionService.transactions().length === 0">
+      <p>Nenhuma transação ainda. Comece em Lançamentos!</p>
+    </div>
+  </div>
+</div>

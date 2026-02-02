@@ -1,0 +1,68 @@
+<div class="signup-container">
+  <h2>Criar Conta</h2>
+  <p class="info">Crie sua conta para gerenciar suas finanças</p>
+  
+  <div class="form">
+    <div class="input-group">
+      <label>Usuário</label>
+      <input 
+        type="text"
+        placeholder="Escolha um usuário" 
+        [value]="username()"
+        (input)="updateUsername($event)"
+        [disabled]="loading()"
+      />
+      <small class="helper">Mínimo 3 caracteres</small>
+    </div>
+    
+    <div class="input-group">
+      <label>Senha</label>
+      <input 
+        type="password"
+        placeholder="Digite uma senha segura" 
+        [value]="password()"
+        (input)="updatePassword($event)"
+        [disabled]="loading()"
+      />
+      <div class="password-strength" *ngIf="password()">
+        <small>Força: <strong [class]="'strength-' + passwordStrength()">
+          {{ passwordStrength() === 'strong' ? '✓ Forte' : passwordStrength() === 'medium' ? '◐ Médio' : '✗ Fraco' }}
+        </strong></small>
+      </div>
+      <small class="helper">Mínimo 8 caracteres, com maiúsculas, minúsculas e números</small>
+    </div>
+    
+    <div class="input-group">
+      <label>Confirmar Senha</label>
+      <input 
+        type="password"
+        placeholder="Confirme sua senha" 
+        [value]="confirmPassword()"
+        (input)="updateConfirmPassword($event)"
+        [disabled]="loading()"
+        (keyup.enter)="submit()"
+      />
+    </div>
+    
+    <button 
+      class="submit-btn" 
+      (click)="submit()"
+      [disabled]="loading()"
+    >
+      {{ loading() ? 'Criando conta...' : 'Registrar' }}
+    </button>
+    
+    <div class="error" *ngIf="error()">
+      <strong>✕ {{ error() }}</strong>
+    </div>
+    
+    <div class="success" *ngIf="ok()">
+      <strong>{{ ok() }}</strong>
+    </div>
+  </div>
+  
+  <div class="login-section">
+    <p>Já tem conta?</p>
+    <button class="login-link-btn" (click)="goToLogin()">Fazer Login</button>
+  </div>
+</div>

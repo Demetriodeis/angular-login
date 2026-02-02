@@ -1,0 +1,11 @@
+<mat-toolbar>
+  <span>My Application</span>
+  <span style="flex:1 1 auto"></span>
+  <ng-container *ngIf="auth.user(); else showLogin">
+    <span>{{ auth.user()?.username }}</span>
+    <button (click)="logout()">Logout</button>
+  </ng-container>
+  <ng-template #showLogin>
+    <button (click)="router.navigate(['/login'])">Login</button>
+  </ng-template>
+</mat-toolbar>

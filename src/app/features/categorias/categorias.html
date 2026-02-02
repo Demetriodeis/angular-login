@@ -1,0 +1,17 @@
+<div class="categorias-container">
+  <h1>Categorias</h1>
+
+  <div class="add-category">
+    <input type="text" placeholder="Nova categoria" [value]="name()" (input)="name.set($event.target.value)" />
+    <button (click)="add()" [disabled]="!name()">Adicionar</button>
+  </div>
+  <div class="error" *ngIf="error()">{{ error() }}</div>
+
+  <div class="category-list">
+    <div class="category-item" *ngFor="let c of service.categories()">
+      <span>{{ c.name }}</span>
+      <button class="delete" (click)="remove(c.id)">✕</button>
+    </div>
+    <div *ngIf="service.categories().length === 0" class="empty">Nenhuma categoria</div>
+  </div>
+</div>

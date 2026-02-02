@@ -1,0 +1,50 @@
+<div class="login-container">
+  <h2>Login</h2>
+  <p class="info">Acesse sua conta financeira</p>
+  
+  <div class="form">
+    <div class="input-group">
+      <label>Usuário</label>
+      <input 
+        type="text"
+        placeholder="Digite seu usuário" 
+        [value]="username()"
+        (input)="updateUsername($event)"
+        [disabled]="loading()"
+      />
+    </div>
+    
+    <div class="input-group">
+      <label>Senha</label>
+      <input 
+        type="password"
+        placeholder="Digite sua senha" 
+        [value]="password()"
+        (input)="updatePassword($event)"
+        [disabled]="loading()"
+        (keyup.enter)="submit()"
+      />
+    </div>
+    
+    <button 
+      class="submit-btn" 
+      (click)="submit()"
+      [disabled]="loading()"
+    >
+      {{ loading() ? 'Entrando...' : 'Entrar' }}
+    </button>
+    
+    <div class="error" *ngIf="error">
+      <strong>⚠️ {{ error }}</strong>
+    </div>
+  </div>
+  
+  <div class="signup-section">
+    <p>Não tem conta?</p>
+    <button class="signup-link-btn" (click)="goToSignup()">Registrar agora</button>
+  </div>
+  
+  <div class="demo-info">
+    <p><small>Demo: Use <strong>dsada</strong> / <strong>abc</strong></small></p>
+  </div>
+</div>

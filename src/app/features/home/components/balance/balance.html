@@ -1,0 +1,18 @@
+<app-balance-card
+  class="card"
+  [type]="'outcome'"
+  [label]="'Dispesas Totais'"
+  [amount]="totalOutcomes()">
+</app-balance-card>
+<app-balance-card
+  class="card"
+  [type]="'income'"
+  [label]="'Receitas Totais'"
+  [amount]="totalIcomes()">
+</app-balance-card>
+<app-balance-card
+  class="card"
+  [type]="'balance'"
+  [label]="'Total Balance'"
+  [amount]="totalBalance()">
+</app-balance-card>

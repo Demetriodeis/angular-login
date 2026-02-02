@@ -1,0 +1,118 @@
+<div class="home-container">
+  <!-- Balance Section -->
+  <div class="balance-section">
+    <app-balance [transactions]="transactionService.transactions()"></app-balance>
+  </div>
+
+  <!-- New Transaction Form -->
+  <div class="form-section">
+    <div class="form-card">
+      <h2>{{ editingId() ? 'Editar Lançamento' : 'Novo Lançamento' }}</h2>
+      
+      <div class="form">
+        <div class="form-group">
+          <label>Descrição</label>
+          <input 
+            type="text"
+            [placeholder]="editingId() ? 'Atualize a descrição' : 'Ex: Salário, Aluguel, Compras...'"
+            [value]="description()"
+            (input)="updateDescription($event)"
+            [disabled]="submitting()"
+          />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Valor</label>
+            <input 
+              type="number"
+              placeholder="0.00"
+              [value]="amount()"
+              (input)="updateAmount($event)"
+              [disabled]="submitting()"
+              step="0.01"
+              min="0"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Tipo</label>
+            <select 
+              [value]="type()"
+              (change)="updateType($event)"
+              [disabled]="submitting()"
+            >
+              <option value="outcome">Despesa</option>
+              <option value="income">Renda</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button 
+            class="submit-btn" 
+            (click)="submitTransaction()"
+            [disabled]="submitting()"
+          >
+            {{ submitting() ? (editingId() ? 'Atualizando...' : 'Adicionando...') : (editingId() ? 'Atualizar' : 'Adicionar Lançamento') }}
+          </button>
+          <button 
+            class="cancel-btn" 
+            *ngIf="editingId()"
+            (click)="cancelEdit()"
+            [disabled]="submitting()"
+          >
+            Cancelar
+          </button>
+        </div>
+
+        <div class="error" *ngIf="error()">
+          <strong>✕ {{ error() }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transactions List -->
+  <div class="transactions-section" *ngIf="transactionService.transactions().length > 0">
+    <h2>Histórico de Transações</h2>
+    <div class="transactions-list">
+      <div class="transaction-card" *ngFor="let transaction of transactionService.transactions()" 
+        [class.income]="transaction.type === 'income'"
+        [class.outcome]="transaction.type === 'outcome'">
+        
+        <div class="transaction-content">
+          <div class="transaction-info">
+            <span class="description">{{ transaction.description }}</span>
+            <span class="date">{{ transaction.date | date: 'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <div class="transaction-amount">
+            <span class="amount" [class.income]="transaction.type === 'income'">
+              {{ transaction.type === 'income' ? '+' : '-' }} R$ {{ transaction.amount | number: '1.2-2' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="transaction-actions">
+          <button class="edit-btn" (click)="startEdit(transaction)" title="Editar">
+            ✎
+          </button>
+          <button class="delete-btn" (click)="deleteTransaction(transaction.id)" title="Deletar">
+            ✕
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="transactionService.transactions().length === 0 && !transactionService.loading()">
+    <p>Nenhuma transação registrada ainda.</p>
+    <p>Comece adicionando um novo lançamento acima.</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading" *ngIf="transactionService.loading()">
+    <p>Carregando transações...</p>
+  </div>
+</div>

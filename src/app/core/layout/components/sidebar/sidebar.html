@@ -1,0 +1,37 @@
+<aside class="sidebar" [class.open]="menuOpen">
+  <div class="sidebar-header">
+    <h3>Financeiro</h3>
+    <button class="close-btn" (click)="closeMenu()" aria-label="Fechar menu">✕</button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <button
+      *ngFor="let item of menuItems"
+      class="nav-item"
+      [class.active]="isActive(item.route, item.exact)"
+      (click)="router.navigate([item.route]); closeMenu()"
+      [attr.aria-label]="item.label"
+    >
+      <span class="nav-icon">{{ item.icon }}</span>
+      <span class="nav-label">{{ item.label }}</span>
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar">{{ getUserInitial() }}</div>
+      <div class="user-details">
+        <span class="user-name">{{ auth.user()?.username }}</span>
+        <span class="user-status">Conectado</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div class="sidebar-overlay" *ngIf="menuOpen" (click)="closeMenu()"></div>
+
+<button class="sidebar-toggle" (click)="toggleMenu()" aria-label="Abrir menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
